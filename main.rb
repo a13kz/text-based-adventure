@@ -39,10 +39,6 @@ def start()
     end
 end 
 
-
-
-
-
 def valid_checker_in2(input)
     while input.to_i.to_s != input
         puts "Vänligen välj ett nummer. Inte #{input}"
@@ -59,5 +55,28 @@ def valid_checker_in2(input)
     return input
 end
 
-#game()
+
+def save_game(name, place)
+  new_row = "#{name}, #{plats}"
+  old_row = []
+  old_row = File.readlines("save.txt")
+  all_rows = [new_row] + old_row
+  all_rows = all_rows[0, 3]
+
+  file = File.open("save.txt", "w")
+  i = 0
+  while 1 < all_rows.length
+    File.write(all_rows[i])
+    i += 1
+  end 
+  File.close
+  
+  File.write("save.txt", "#{name}, #{plats}")
+  puts "Spelet har sparats" 
+end 
+
+def load_game #Välja mellan vilken fil man kan använda
+
+end 
+
 start()
