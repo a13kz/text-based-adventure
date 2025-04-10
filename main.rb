@@ -9,12 +9,15 @@ def meny()
   puts "välj kommando"
   puts "1. - start"
   puts "2. - quit"
+  puts "3. - load save file"
   input = gets.chomp
   valid_checker_in2(input)
     if input == 1
-        start()
+      start()
+    elsif input == 3
+      
     else 
-        return
+      return
     end 
 end
 
