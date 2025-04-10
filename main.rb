@@ -6,37 +6,71 @@ end
 @inventory_versions = ["lager","inventory","väska"]
 @operations = ["ta upp","läs", "up","höger","ner","lager", "vänster", ""]
 
-#def meny()
-#  operations = ["s","q"]
-#  puts "---meny---"
-#  puts "välj kommando"
-#  puts "1. - start"
-#  puts "2. - quit"
-#  puts "3. - load save file"
-#  input = gets.chomp
-#    if input == 1
-#      start()
-#    elsif input == 2
-#      return
-#    elsif input == 3
-#      rows = File.readlines("save.txt")
-#      i = 0
-#      while i < rows.length
-#         puts "#{i}: #{rows[i]}"
-#         i += 1
-#      end 
-#        = gets.chomp
-#      if 
-#    else 
-#      puts "Skriv ett fungerande kommando, inte #{input}"
-#    end 
-#end
+def meny()
+  operations = ["s","q"]
+  puts "---meny---"
+  puts "välj kommando"
+  puts "1. - start"
+  puts "2. - quit"
+  puts "3. - load save file"
+  input = gets.chomp
 
-def quit(cause)
-  if cause == "home"
-    puts "Du valde att stanna hemma."
-    puts "Din resa slutar här"
-  end
+  while input != "1" && input != "2" && input != "3"
+    puts "Skriv ett giltigt kommando, inte #{input}"
+    input = gets.chomp
+  end    
+
+  if input == "1"
+    hp = 20 
+    room = "0"
+    inventory = []
+    save = false
+
+    start(room, hp, inventory, save?)
+
+  elsif input == "2"
+    puts
+    puts "Spelet avslutas"
+    return
+  else 
+    if File.empty?("save.txt")
+      puts "Finns inga sparfiler"
+      meny()
+      return
+    end 
+
+    puts 
+    lines = File.readlines("save.txt")
+    i = 0
+    while i < lines.length
+       puts "#{i}: #{lines[i]}"
+       i += 1
+    end 
+
+    puts "Välj vilken sparfil du vill ladda (1-3):"
+    save_file = gets.chomp
+    puts 
+    while save_file != "1" && save_file != "2" && save_file != "3"
+      puts "Skriv ett giltigt kommando, inte #{save_file}"
+      save_file = gets.chomp
+      puts ""
+    end    
+
+    save = true
+    index = save_file.to_i - 1
+    row = lines[index]
+    row = row.chomp
+    row_parts = row.split(", ")
+    place = row_parts[1]
+    hp = row_parts[2]
+    inventory = row_parts[3]
+    puts "#{place}"
+    puts "#{hp}"
+    puts "#{inventory}"
+
+    start(place, hp, inventory, save)
+
+  end 
 end
 
 def find_i(arr, item)
@@ -49,12 +83,18 @@ def find_i(arr, item)
   end
 end
 
-def start()
-  hp = 20 
-  rooms = "0"
-  inventory = []
-  
-  
+def start(place, hp, inventory, save)  
+
+  #Ska kanske vara någon annan stans
+  #if save? == true
+  #  puts
+  #  puts "---Save---"
+  #  puts "Välkommen tillbaka!"
+  #  puts "Du är i #{plats} och har #{hp} HP"
+  #  puts "Du har: #{inventory}"
+  #end 
+
+  puts
   puts "Du vaknar upp i en grotta"
   puts "Du minns ingenting..."
   puts "Du ser ett skrynkligt papper på golvet"
@@ -133,20 +173,19 @@ end
 
 
 def save_game(name, place, hp, inventory)
-  new_row = "#{name}, #{plats}, #{hp}, #{inventory}"
+  new_row = "#{name}, #{place}, #{hp}, #{inventory}"
   old_row = []
   old_row = File.readlines("save.txt")
   all_rows = [new_row] + old_row
   all_rows = all_rows[0, 3]
   file = File.open("save.txt", "w")
   i = 0
-  while 1 < all_rows.length
-    File.write(all_rows[i])
+  while i < all_rows.length
+    file.write(all_rows[i])
     i += 1
   end 
-  File.close
+  file.close
   
-  File.write("save.txt", "#{name}, #{plats}, #{hp}, #{inventory}")
   puts "Spelet har sparats" 
 end 
 
@@ -157,4 +196,4 @@ end
 
 
 
-start()
+game()
