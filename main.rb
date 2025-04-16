@@ -2,9 +2,16 @@ def game()
     meny()
 end
 
+@dungeon_map = 
+[
+  []
+  []
+  []
+  []
+] #använda denna för att veta var man är
 @pick_up_versions = ["ta up","ta","plocka upp"]
 @inventory_versions = ["lager","inventory","väska"]
-@operations = ["ta upp","läs", "up","höger","ner","lager", "vänster", ""]
+@operations = ["ta upp","läs", "up","höger","ner","lager", "vänster", "spara"]
 
 def meny()
   operations = ["s","q"]
@@ -26,7 +33,7 @@ def meny()
     inventory = []
     save = false
 
-    start(room, hp, inventory, save?)
+    start(room, hp, inventory, save)
 
   elsif input == "2"
     puts
@@ -86,7 +93,7 @@ end
 def start(place, hp, inventory, save)  
 
   #Ska kanske vara någon annan stans
-  #if save? == true
+  #if save == true
   #  puts
   #  puts "---Save---"
   #  puts "Välkommen tillbaka!"
@@ -102,8 +109,9 @@ def start(place, hp, inventory, save)
 
   while !@operations.include?(input) && !@pick_up_versions.include?(input) && @inventory_versions.include?(input)
     puts "Du kan inte göra så"
-    puts "gör någonting som du kan göra"
-    input = gets.chomp
+    puts "gör någonting som du kan göra
+    "
+    input = gets.chomp.downcase
   end
   current_op_index = find_i(@operations,input)
   info = ["Du tar upp pappret från marken","du har ingenting du kan läsa
@@ -142,17 +150,11 @@ def start(place, hp, inventory, save)
   if input == "help"
     i = 0
     while i < @operations.length
-      puts @operations[i]    
+      puts @operations[i]  
+      i += 1  
     end
-    i += 1
   end
-    
-    #valid_checker_in2(input)
-    #if input.to_i == 1
-    #  puts "fortsätt"
-    #else
-    #  quit("home")
-    #end
+
 end 
 
 #def valid_checker_in2(input)
@@ -188,12 +190,5 @@ def save_game(name, place, hp, inventory)
   
   puts "Spelet har sparats" 
 end 
-
-def load_game #Välja mellan vilken fil man kan använda
-
-end 
-
-
-
 
 game()
