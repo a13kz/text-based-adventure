@@ -4,11 +4,23 @@ end
 
 @dungeon_map = 
 [
-  []
-  []
-  []
-  []
-] #använda denna för att veta var man är
+  [ 
+    ["Rum 0,0", ["right", "down"]],
+    ["Rum 0,1", ["left", "down"]],
+    ["Rum 0,2", ["down"]]
+  ],
+  [ 
+    ["Rum 1,0", ["up", "right"]],
+    ["Rum 1,1", ["up", "down", "right", "left"]],
+    ["Rum 1,2", ["up", "left"]]
+  ],
+  [ 
+    ["Rum 2,0", ["rigth"]],
+    ["Rum 2,1", ["left", "rigth"]],
+    ["Rum 2,2", ["left"]]
+  ]
+] #använda denna för att veta var man är och var man får gå
+
 @pick_up_versions = ["ta up","ta","plocka upp"]
 @inventory_versions = ["lager","inventory","väska"]
 @operations = ["ta upp","läs", "up","höger","ner","lager", "vänster", "spara"]
@@ -190,5 +202,9 @@ def save_game(name, place, hp, inventory)
   
   puts "Spelet har sparats" 
 end 
+
+def move_player()
+  
+end # ska kolla om det finns en möjlighet att gå dit
 
 game()
