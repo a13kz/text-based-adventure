@@ -1,5 +1,41 @@
-def game()
-    meny()
+@current_save_file_index = 0
+def setup()
+  puts "Vänligen välj en spar fil"
+  input = gets.chomp
+  start_place = File.read
+  start()
+    #meny()
+end
+
+def start()
+  puts "Välkommen till The Ultimate Challenge"
+  puts "Vill du ladda en gammal sparfil - (1) eller starta ett nytt äventyr - (2)? "
+  input = gets.chomp
+  while input != "1" && input != "2" 
+    input = gets.chomp
+    puts "Välj ett giltigt kommando inte #{input}"
+  end
+  if input == 1
+    hp = 20 
+    room = "0"
+    inventory = []
+    save = false
+    game(room, hp, inventory, save)
+  else 
+    puts "Vänligen välj det nummer av sparfil att fortsätta ditt äventyr med"
+    i=0
+    lines = File.readlines("save.txt")
+    while i < lines.length
+      if lines[i] == "\n"
+        puts "#{i+1} tom sparfil"
+      else
+        puts "#{i+1}: #{lines[i]}"
+      end        
+      i += 1
+    end
+    input = gets.chomp
+    load_game(input)
+  end 
 end
 
 @dungeon_map = 
@@ -25,73 +61,6 @@ end
 @inventory_versions = ["lager","inventory","väska"]
 @operations = ["ta upp","läs", "up","höger","ner","lager", "vänster", "spara"]
 
-def meny()
-  operations = ["s","q"]
-  puts "---meny---"
-  puts "välj kommando"
-  puts "1. - start"
-  puts "2. - quit"
-  puts "3. - load save file"
-  input = gets.chomp
-
-  while input != "1" && input != "2" && input != "3"
-    puts "Skriv ett giltigt kommando, inte #{input}"
-    input = gets.chomp
-  end    
-
-  if input == "1"
-    hp = 20 
-    room = "0"
-    inventory = []
-    save = false
-
-    start(room, hp, inventory, save)
-
-  elsif input == "2"
-    puts
-    puts "Spelet avslutas"
-    return
-  else 
-    if File.empty?("save.txt")
-      puts "Finns inga sparfiler"
-      meny()
-      return
-    end 
-
-    puts 
-    lines = File.readlines("save.txt")
-    i = 0
-    while i < lines.length
-       puts "#{i}: #{lines[i]}"
-       i += 1
-    end 
-
-    puts "Välj vilken sparfil du vill ladda (1-3):"
-    save_file = gets.chomp
-    puts 
-    while save_file != "1" && save_file != "2" && save_file != "3"
-      puts "Skriv ett giltigt kommando, inte #{save_file}"
-      save_file = gets.chomp
-      puts ""
-    end    
-
-    save = true
-    index = save_file.to_i - 1
-    row = lines[index]
-    row = row.chomp
-    row_parts = row.split(", ")
-    place = row_parts[1]
-    hp = row_parts[2]
-    inventory = row_parts[3]
-    puts "#{place}"
-    puts "#{hp}"
-    puts "#{inventory}"
-
-    start(place, hp, inventory, save)
-
-  end 
-end
-
 def find_i(arr, item)
   i = 0
   while i < arr.length
@@ -102,63 +71,62 @@ def find_i(arr, item)
   end
 end
 
-def start(place, hp, inventory, save)  
+def game(place, hp, inventory, save)
 
   #Ska kanske vara någon annan stans
-  #if save == true
-  #  puts
-  #  puts "---Save---"
-  #  puts "Välkommen tillbaka!"
-  #  puts "Du är i #{plats} och har #{hp} HP"
-  #  puts "Du har: #{inventory}"
-  #end 
-
-  puts
-  puts "Du vaknar upp i en grotta"
-  puts "Du minns ingenting..."
-  puts "Du ser ett skrynkligt papper på golvet"
-  input = gets.chomp.downcase
-
-  while !@operations.include?(input) && !@pick_up_versions.include?(input) && @inventory_versions.include?(input)
-    puts "Du kan inte göra så"
-    puts "gör någonting som du kan göra
-    "
+  if save == true
+    puts
+    puts "---Save---"
+    puts "Välkommen tillbaka!"
+    puts "Du är i #{place} och har #{hp} HP"
+    puts "Du har: #{inventory}"
+    
+  else
+    puts "Du vaknar upp i en grotta"
+    puts "Du minns ingenting..."
+    puts "Du ser ett skrynkligt papper på golvet"
     input = gets.chomp.downcase
+
+    while !@operations.include?(input) && !@pick_up_versions.include?(input) && @inventory_versions.include?(input)
+      puts "Du kan inte göra så"
+      puts "gör någonting som du kan göra
+      "
+      input = gets.chomp.downcase
+    end
+    current_op_index = find_i(@operations,input)
+    info = ["Du tar upp pappret från marken","du har ingenting du kan läsa
+    ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
+    "]
+    results = ["info", "igen"]
+    items = ["papper"]
+    if current_op_index == 0
+      inventory << items[current_op_index]
+    end
+
+    room = [0,1,2,3]
+    current_room = room[current_op_index]
+    puts info[current_op_index]
+
+    input = gets.chomp.downcase
+    while !@operations.include?(input)
+      puts "Du kan inte göra så"
+      puts "gör någonting som du kan göra"
+      input = gets.chomp
+    end
+    current_op_index = find_i(@operations,input)
+    info = ["Du kan inte ta upp något","JAG HAR KIDNAPPAT DIG OCH PLACERAT DIG I DÖSKALLEGROTTAN. MUHAHAHAHA. DU KOMMER ALRIG KOMMA HÄR IFRÅN. Du kan försöka utforska grottan genom att gå höger, vänster, up och ner samt plocka upp saker du stötter på mmr. MEN EGENTLIGEN ÄR DET MENINGSLÖST HIHIHIHI.
+    ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
+    "]
+    results = ["info", "igen"]
+    items = ["papper"]
+    if current_op_index == 0
+      inventory << items[current_op_index]
+    end
+
+    room = [0,1,2,3]
+    current_room = room[current_op_index]
+    puts info[current_op_index]
   end
-  current_op_index = find_i(@operations,input)
-  info = ["Du tar upp pappret från marken","du har ingenting du kan läsa
-  ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
-  "]
-  results = ["info", "igen"]
-  items = ["papper"]
-  if current_op_index == 0
-    inventory << items[current_op_index]
-  end
-  
-  room = [0,1,2,3]
-  current_room = room[current_op_index]
-  puts info[current_op_index]
-  
-  input = gets.chomp.downcase
-  while !@operations.include?(input)
-    puts "Du kan inte göra så"
-    puts "gör någonting som du kan göra"
-    input = gets.chomp
-  end
-  current_op_index = find_i(@operations,input)
-  info = ["Du kan inte ta upp något","JAG HAR KIDNAPPAT DIG OCH PLACERAT DIG I DÖSKALLEGROTTAN. MUHAHAHAHA. DU KOMMER ALRIG KOMMA HÄR IFRÅN. Du kan försöka utforska grottan genom att gå höger, vänster, up och ner samt plocka upp saker du stötter på mmr. MEN EGENTLIGEN ÄR DET MENINGSLÖST HIHIHIHI.
-  ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
-  "]
-  results = ["info", "igen"]
-  items = ["papper"]
-  if current_op_index == 0
-    inventory << items[current_op_index]
-  end
-  
-  room = [0,1,2,3]
-  current_room = room[current_op_index]
-  puts info[current_op_index]
-  
   if input == "help"
     i = 0
     while i < @operations.length
@@ -169,24 +137,9 @@ def start(place, hp, inventory, save)
 
 end 
 
-#def valid_checker_in2(input)
-#    while input.to_i.to_s != input
-#        puts "Vänligen välj ett nummer. Inte #{input}"
-#        input = gets.chomp
-#        valid_checker_in2(input)
-#    end
-#
-#    while input.to_i > 2 || input.to_i < 1
-#        puts "Vänligen välj mellan kommandon, 1 eller 2. Inte #{input}
-#        "
-#        input = gets.chomp
-#        valid_checker_in2(input)
-#    end
-#    return input
-#end
-
-
-def save_game(name, place, hp, inventory)
+def save_game(place, hp, inventory)
+  puts "What do you want the file to be named?"
+  name = gets.chomp
   new_row = "#{name}, #{place}, #{hp}, #{inventory}"
   old_row = []
   old_row = File.readlines("save.txt")
@@ -199,12 +152,40 @@ def save_game(name, place, hp, inventory)
     i += 1
   end 
   file.close
-  
+  puts "--------"
   puts "Spelet har sparats" 
+  return # avsluta spelet
 end 
+
+def load_game(save_file)
+
+  while save_file != "1" && save_file != "2" && save_file != "3"
+    puts "Skriv ett giltigt kommando, inte #{save_file}"
+    save_file = gets.chomp
+    puts ""
+  end
+  lines = File.readlines("save.txt")
+  save = true
+  index = save_file.to_i - 1
+  row = lines[index].chomp
+  row_parts = row.split(", ")
+  place = row_parts[1]
+  hp = row_parts[2]
+  inventory = row_parts[3]
+
+  game(place, hp, inventory, save)
+end
+
 
 def move_player()
   
 end # ska kolla om det finns en möjlighet att gå dit
 
-game()
+start()
+
+# Fixa dongeon map
+# attackera
+# spara en fil
+# Avslut med en nyckel för att komma ut
+# 
+#
