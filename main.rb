@@ -41,19 +41,13 @@ end
 @dungeon_map = 
 [
   [ 
-    ["Rum 0,0", ["right", "down"]],
-    ["Rum 0,1", ["left", "down"]],
-    ["Rum 0,2", ["down"]]
+    ["Rum 0,0", ["right", "down"]],["Rum 0,1", ["left", "down"]],["Rum 0,2", ["down"]]
   ],
   [ 
-    ["Rum 1,0", ["up", "right"]],
-    ["Rum 1,1", ["up", "down", "right", "left"]],
-    ["Rum 1,2", ["up", "left"]]
+    ["Rum 1,0", ["up", "right"]],["Rum 1,1", ["up", "down", "right", "left"]],["Rum 1,2", ["up", "left"]]
   ],
   [ 
-    ["Rum 2,0", ["rigth"]],
-    ["Rum 2,1", ["left", "rigth"]],
-    ["Rum 2,2", ["left"]]
+    ["Rum 2,0", ["rigth"]],["Rum 2,1", ["left", "rigth"]],["Rum 2,2", ["left"]]
   ]
 ] #använda denna för att veta var man är och var man får gå
 
@@ -177,8 +171,24 @@ def load_game(save_file)
 end
 
 
-def move_player()
-  
+def move_player(input, x_pos, y_pos)
+  info_room = @dungeon_map[x_pos][y_pos]
+  directions = info_room[1]
+  if input == left && directions.include?(left)
+    n_y = y_pos - 1
+  elsif input == right && directions(right)
+    n_y = y_pos + 1
+  elsif input == up && directions(up)
+    n_x = x_pos + 1
+  elsif input == down && directions(down)
+    n_x = x_pos - 1
+  else 
+    puts "Du kan inte gå åt det hållet"
+    return [pos_x, pos_y]
+  end  
+
+  puts "Du går till #{@dungeon_map[n_y][n_x][0]}"
+  return [n_x, n_y]
 end # ska kolla om det finns en möjlighet att gå dit
 
 start()
