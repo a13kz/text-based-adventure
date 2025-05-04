@@ -15,7 +15,7 @@ def start()
     input = gets.chomp
     puts "Välj ett giltigt kommando inte #{input}"
   end
-  if input == 1
+  if input.to_i == 2
     hp = 20 
     room = "0"
     inventory = []
@@ -93,33 +93,38 @@ def game(place, hp, inventory, save)
     "]
     results = ["info", "igen"]
     items = ["papper"]
-    if current_op_index == 0
-      inventory << items[current_op_index]
+    if input == "ta upp"
+      puts info[0]
     end
-
-    room = [0,1,2,3]
-    current_room = room[current_op_index]
-    puts info[current_op_index]
-
     input = gets.chomp.downcase
     while !@operations.include?(input)
       puts "Du kan inte göra så"
       puts "gör någonting som du kan göra"
       input = gets.chomp
     end
-    current_op_index = find_i(@operations,input)
     info = ["Du kan inte ta upp något","JAG HAR KIDNAPPAT DIG OCH PLACERAT DIG I DÖSKALLEGROTTAN. MUHAHAHAHA. DU KOMMER ALRIG KOMMA HÄR IFRÅN. Du kan försöka utforska grottan genom att gå höger, vänster, up och ner samt plocka upp saker du stötter på mmr. MEN EGENTLIGEN ÄR DET MENINGSLÖST HIHIHIHI.
     ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
-    results = ["info", "igen"]
-    items = ["papper"]
-    if current_op_index == 0
-      inventory << items[current_op_index]
+    if input == "läs"
+      puts info[0]
     end
+    #if current_op_index == 0
+    #  inventory << items[current_op_index]
+    #end
 
     room = [0,1,2,3]
     current_room = room[current_op_index]
     puts info[current_op_index]
+    #current_op_index = find_i(@operations,input)
+    
+    #results = ["info", "igen"]
+    #items = ["papper"]
+    #if current_op_index == 0
+    #  inventory << items[current_op_index]
+    #end
+    #room = [0,1,2,3]
+    #current_room = room[current_op_index]
+    #puts info[current_op_index]
   end
   if input == "help"
     i = 0
