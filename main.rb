@@ -33,7 +33,10 @@ def start()
       end        
       i += 1
     end
-    input = gets.chomp
+    while input != "1" && input != "2" && input != "3" 
+      input = gets.chomp
+      puts "Välj ett giltigt kommando inte #{input}"
+    end
     load_game(input)
   end 
 end
@@ -41,13 +44,19 @@ end
 @dungeon_map = 
 [
   [ 
-    ["Rum 0,0", ["right", "down"]],["Rum 0,1", ["left", "down"]],["Rum 0,2", ["down"]]
+    ["Rum -2,0", ["right"]],["Rum -2,1", ["down", "right", "left"]],["Rum -2,2", ["left"]],["EMPTY -2,3", [""]],["EMPTY -2,4", [""]]
   ],
   [ 
-    ["Rum 1,0", ["up", "right"]],["Rum 1,1", ["up", "down", "right", "left"]],["Rum 1,2", ["up", "left"]]
+    ["EMPTY -1,0", [""]],["Rum -1,1", ["up", "down"]],["Rum -1,2", ["down"]],["EMPTY -1,3", [""]],["EMPTY -1,4", [""]]
   ],
   [ 
-    ["Rum 2,0", ["rigth"]],["Rum 2,1", ["left", "rigth"]],["Rum 2,2", ["left"]]
+    ["Rum 0,0", ["right"]],["Rum 0,1", ["up", "right", "left"]],["Rum 0,2", ["up", "right", "left"]],["Rum 0,3", ["down", "right", "left"]],["Rum 0,4", ["down", "left"]]
+  ],
+  [ 
+    ["EMPTY 1,0", [""]],["Rum -1,1", ["down", "right"]],["Rum 1,2", ["right", "left"]],["Rum 1,3", ["up", "right", "left"]],["Rum 1,4", ["up", "down", "left"]]
+  ],
+  [ 
+    ["Rum 2,0", ["right"]],["Rum 2,1", ["up", "right", "left"]],["Escape rum 2,2", ["left"]],["EMPTY 2,3", [""]],["Rum 2,4", ["up"]]
   ]
 ] #använda denna för att veta var man är och var man får gå
 
@@ -198,7 +207,6 @@ end # ska kolla om det finns en möjlighet att gå dit
 
 start()
 
-# Fixa dongeon map
 # attackera
 # spara en fil
 # Avslut med en nyckel för att komma ut
