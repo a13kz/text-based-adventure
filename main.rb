@@ -83,57 +83,68 @@ def game(place, hp, inventory, save)
     puts "Välkommen tillbaka!"
     puts "Du är i #{place} och har #{hp} HP"
     puts "Du har: #{inventory}"
-    
+    @inventory = inventory
   else
     puts "Du vaknar upp i en grotta"
     puts "Du minns ingenting..."
     puts "Du ser ett skrynkligt papper på golvet"
     input = gets.chomp.downcase
 
-    while !@operations.include?(input) && !@pick_up_versions.include?(input) && @inventory_versions.include?(input)
+    while !@operations.include?(input)
       puts "Du kan inte göra så"
       puts "gör någonting som du kan göra
       "
       input = gets.chomp.downcase
     end
-    current_op_index = find_i(@operations,input)
-    info = ["Du tar upp pappret från marken","du har ingenting du kan läsa
+    i = 0    
+    
+    info = ["Du tar upp pappret från marken. Undrar om du kan läsa den","du har ingenting du kan läsa. Kanske borde du ta upp pappret från marken.
     ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
-    results = ["info", "igen"]
-    items = ["papper"]
-    if input == "ta upp"
-      puts info[0]
+    while i < @operations.length
+      if input == @operations[i]
+        puts info[i]
+      end
+      i+=1
     end
+
+    while input != @operations[0]
+      input = gets.chomp
+      while i < @operations.length
+        if input == @operations[i]
+          puts info[i]
+        end
+        i+=1
+      end
+    end
+    puts info[0]
+
     input = gets.chomp.downcase
     while !@operations.include?(input)
       puts "Du kan inte göra så"
       puts "gör någonting som du kan göra"
       input = gets.chomp
     end
+
     info = ["Du kan inte ta upp något","JAG HAR KIDNAPPAT DIG OCH PLACERAT DIG I DÖSKALLEGROTTAN. MUHAHAHAHA. DU KOMMER ALRIG KOMMA HÄR IFRÅN. Du kan försöka utforska grottan genom att gå höger, vänster, up och ner samt plocka upp saker du stötter på mmr. MEN EGENTLIGEN ÄR DET MENINGSLÖST HIHIHIHI.
     ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
-    if input == "läs"
-      puts info[0]
+    while i < @operations.length
+      if input == @operations[i]
+        puts info[i]
+      end
+      i+=1
     end
-    #if current_op_index == 0
-    #  inventory << items[current_op_index]
-    #end
-
-    room = [0,1,2,3]
-    current_room = room[current_op_index]
-    puts info[current_op_index]
-    #current_op_index = find_i(@operations,input)
-    
-    #results = ["info", "igen"]
-    #items = ["papper"]
-    #if current_op_index == 0
-    #  inventory << items[current_op_index]
-    #end
-    #room = [0,1,2,3]
-    #current_room = room[current_op_index]
-    #puts info[current_op_index]
+    while input != @operations[1]
+      input = gets.chomp
+      while i < @operations.length
+        if input == @operations[i]
+          puts info[i]
+        end
+        i+=1
+      end
+    end
+    puts info[1]
   end
   if input == "help"
     i = 0
