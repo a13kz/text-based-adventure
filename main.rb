@@ -195,7 +195,6 @@ def load_game(save_file)
   game(place, hp, inventory, save)
 end
 
-
 def move_player(input, x_pos, y_pos)
   info_room = @dungeon_map[x_pos][y_pos]
   directions = info_room[1]
@@ -215,6 +214,27 @@ def move_player(input, x_pos, y_pos)
   puts "Du går till #{@dungeon_map[n_y][n_x][0]}"
   return [n_x, n_y]
 end # ska kolla om det finns en möjlighet att gå dit
+
+def spawn_monster()
+  slu = rand(1..4)
+  if slu == 1
+    what_mons = rand(1..4)
+    if what_mons == 1
+      return ["Golem", 10, ]
+    elsif what_mons == 2
+      return ["Goblin", 6, ]
+    elsif what_mons == 3
+      return ["Gigant", 15, ]
+    else
+      return ["Bear", 8, ]
+    end  #name, hp, attack
+  else 
+    return nil
+  end 
+end 
+
+def attack()
+end # Du ska kunna attackera den attackerar och du kan skada den och jag kan bli skadad
 
 start()
 
