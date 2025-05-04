@@ -44,21 +44,41 @@ end
 @dungeon_map = 
 [
   [ 
-    ["Rum -2,0", ["right"]],["Rum -2,1", ["down", "right", "left"]],["Rum -2,2", ["left"]],["EMPTY -2,3", [""]],["EMPTY -2,4", [""]]
+    ["Rum -2,0", ["right"], "Du står i ett mörkt och kallt stenrum. Väggarna är fuktiga och du hör droppande vatten. Ett svagt ljus sipprar in från en öppning till höger."],
+    ["Rum -2,1", ["down", "right", "left"], "Ett dammigt bibliotek med trasiga hyllor. En vindpust blåser in från vänster, medan en trappa leder neråt. En gång sträcker sig också till höger."],
+    ["Rum -2,2", ["left"], "En kammare med en sprucken spegel och blodfläckar på golvet. Det verkar finnas en väg tillbaka åt vänster."],
+    ["EMPTY -2,3", [""]],
+    ["EMPTY -2,4", [""]]
   ],
   [ 
-    ["EMPTY -1,0", [""]],["Rum -1,1", ["up", "down"]],["Rum -1,2", ["down"]],["EMPTY -1,3", [""]],["EMPTY -1,4", [""]]
+    ["EMPTY -1,0", [""]],
+    ["Rum -1,1", ["up", "down"], "Ett tomt stenrum med trasiga rep på marken. En stege leder uppåt och en gång går vidare neråt."],
+    ["Rum -1,2", ["down"], "Här luktar det bränt, och askan yr i luften. Det finns bara en väg neråt."],
+    ["EMPTY -1,3", [""]],
+    ["EMPTY -1,4", [""]]
   ],
   [ 
-    ["Rum 0,0", ["right"]],["Rum 0,1", ["up", "right", "left"]],["Rum 0,2", ["up", "right", "left"]],["Rum 0,3", ["down", "right", "left"]],["Rum 0,4", ["down", "left"]]
+    ["Rum 0,0", ["right"], "En fuktig cell med rostiga galler. Symboler på väggen pekar åt höger där ett järngaller är öppet."],
+    ["Rum 0,1", ["up", "right", "left"], "Skuggor dansar på väggarna från facklor. Du hör steg ovanför dig, ett ljud ekar till vänster och längre fram leder gången högerut."],
+    ["Rum 0,2", ["up", "right", "left"], "Gamla ben täcker golvet. En väg leder uppåt, en annan slingrar sig till vänster. Du ser även en öppning till höger."],
+    ["Rum 0,3", ["down", "right", "left"], "Ett rum fyllt av rostiga vapen. En mörk trappa leder ner, men du kan också gå höger eller vänster."],
+    ["Rum 0,4", ["down", "left"], "En trasig dörr hänger på sned. Något har klöst väggarna. Du kan ta dig ner eller smyga åt vänster."]
   ],
   [ 
-    ["EMPTY 1,0", [""]],["Rum -1,1", ["down", "right"]],["Rum 1,2", ["right", "left"]],["Rum 1,3", ["up", "right", "left"]],["Rum 1,4", ["up", "down", "left"]]
+    ["EMPTY 1,0", [""]],
+    ["Rum -1,1", ["down", "right"], "En lång gång där klomärken pryder väggarna. Du ser en trappa ner och ett svagt sken från höger."],
+    ["Rum 1,2", ["right", "left"], "En stor pelarsal där taket rasat in. Du ser öppningar både till vänster och höger."],
+    ["Rum 1,3", ["up", "right", "left"], "En vind blåser kallt i korridoren. Du anar en stege uppåt och gångar till båda sidor."],
+    ["Rum 1,4", ["up", "down", "left"], "Väggarna är täckta av svart sten. Du kan gå uppåt, fortsätta ner eller ta till vänster."]
   ],
   [ 
-    ["Rum 2,0", ["right"]],["Rum 2,1", ["up", "right", "left"]],["Escape rum 2,2", ["left"]],["EMPTY 2,3", [""]],["Rum 2,4", ["up"]]
+    ["Rum 2,0", ["right"], "Rummet är täckt av spindelväv. Något rör sig där framme, och en gång leder åt höger."],
+    ["Rum 2,1", ["up", "right", "left"], "Ett träd växer genom taket. En väg går tillbaka uppåt, men du ser också stigar åt både vänster och höger."],
+    ["Escape rum 2,2", ["left"]],
+    ["EMPTY 2,3", [""]],
+    ["Rum 2,4", ["up"], "En kammare fylld med sarkofager. En trappa leder upp mot mörkret."]
   ]
-] #använda denna för att veta var man är och var man får gå
+] #AI har skrivit beskrivningen till rumen
 
 @pick_up_versions = ["ta up","ta","plocka upp"]
 @inventory_versions = ["lager","inventory","väska"]
@@ -220,20 +240,24 @@ def spawn_monster()
   if slu == 1
     what_mons = rand(1..4)
     if what_mons == 1
-      return ["Golem", 10, ]
+      return ["Golem", 10, 1..3]
     elsif what_mons == 2
-      return ["Goblin", 6, ]
+      return ["Goblin", 6,  1..2]
     elsif what_mons == 3
-      return ["Gigant", 15, ]
+      return ["Jätte", 15, 2..3]
     else
-      return ["Bear", 8, ]
+      return ["Björn", 8, 1..3]
     end  #name, hp, attack
   else 
     return nil
   end 
 end 
 
-def attack()
+def attack(monster_inf)
+  mons_name = monster_inf[0]
+  mons_hp = monster_inf[1]
+  puts "En #{mons_name} attackerar dig!"
+  puts "Skriv attack om för att attackera fienden"
 end # Du ska kunna attackera den attackerar och du kan skada den och jag kan bli skadad
 
 start()
