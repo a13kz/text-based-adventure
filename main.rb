@@ -95,24 +95,115 @@ def find_i(arr, item)
 end
 
 def game(place, hp, inventory, save)
+  
   if y == 0 && x == 0
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 0 && x == 1
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 0 && x == 2
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 1 && x == 1
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 1 && x == 2
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 2 && x == 0
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 2 && x == 1
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 2 && x == 2
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 2 && x == 3
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 2 && x == 4
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 3 && x == 1
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 3 && x == 2
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 3 && x == 3
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 3 && x == 4
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 4 && x == 0
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 4 && x == 1
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 4 && x == 2
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   elsif y == 4 && x == 4
+    puts "#{@dungeon_map[x][y][3]}"
+    there_att = spawn_monster()
+    if there_att != nil
+      attack(there_att)
+    end 
   else
   end
   #Ska kanske vara någon annan stans
