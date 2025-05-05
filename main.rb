@@ -95,7 +95,26 @@ def find_i(arr, item)
 end
 
 def game(place, hp, inventory, save)
-
+  if y == 0 && x == 0
+  elsif y == 0 && x == 1
+  elsif y == 0 && x == 2
+  elsif y == 1 && x == 1
+  elsif y == 1 && x == 2
+  elsif y == 2 && x == 0
+  elsif y == 2 && x == 1
+  elsif y == 2 && x == 2
+  elsif y == 2 && x == 3
+  elsif y == 2 && x == 4
+  elsif y == 3 && x == 1
+  elsif y == 3 && x == 2
+  elsif y == 3 && x == 3
+  elsif y == 3 && x == 4
+  elsif y == 4 && x == 0
+  elsif y == 4 && x == 1
+  elsif y == 4 && x == 2
+  elsif y == 4 && x == 4
+  else
+  end
   #Ska kanske vara någon annan stans
   if save == true
     puts
