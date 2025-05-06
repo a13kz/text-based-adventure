@@ -2,7 +2,7 @@
 
 @x = 2
 @y = 2
-@hp = 1
+@hp = 20
 @alive = true
 
 def setup()
@@ -13,15 +13,17 @@ def setup()
 end
 
 def start()
-  puts "Välkommen till The Ultimate Challenge"
-  puts "Vill du ladda en gammal sparfil - (1) eller starta ett nytt äventyr - (2)? "
+  puts "=== Välkommen till The Ultimate Challenge ==="
+  puts "1. Ladda ett tidigare spel"
+  puts "2. Starta ett nytt äventyr"
+  puts "Ange 1 eller 2:"
   input = gets.chomp
   while input != "1" && input != "2" 
     input = gets.chomp
     puts "Välj ett giltigt kommando inte #{input}"
   end
   if input.to_i == 2
-    hp = 20 
+    @hp = 20 
     @x = 2
     @y = 2
     inventory = []
@@ -148,8 +150,7 @@ def update()
       puts "spara"
       save_game()
     elsif input == @operations[8]
-      puts "hjälp"
-      puts @operations
+      help_list()
     elsif input == @operations[9]
       puts "avsluta"
       exit
@@ -383,11 +384,12 @@ def load_game(save_file)
   index = save_file.to_i - 1
   row = lines[index].chomp
   row_parts = row.split(", ")
-  place = row_parts[1]
-  hp = row_parts[2]
-  inventory = row_parts[3]
+  @x = row_parts[1]
+  @y = row_parts[2]
+  @hp = row_parts[3]
+  inventory = row_parts[4]
 
-  game(place, hp, inventory, save)
+  game(place, hp, inventory, save) #"name,place,{hp},inventory"
 end
 
 def spawn_monster()
@@ -415,15 +417,16 @@ def spawn_monster()
 end 
 
 def attack(monster_inf, hp) #20 == hp
-  puts "----Strid----"
+  puts "----STRID----"
   mons_name = monster_inf[0]
   mons_hp = monster_inf[1]
-  puts "En #{mons_name} attackerar dig!"
+  puts "En #{mons_name} attackerar dig!\n\n"
   while 0 < mons_hp
-    puts "#{mons_name} har #{mons_hp}hp kvar"
+    puts "#{mons_name} har #{mons_hp}hp"
     damage = rand(monster_inf[2])
     @hp -= damage
-    puts "Du tog #{damage} skada! Du har #{@hp}hp kvar."
+    puts "Du tog #{damage} skada!"
+    puts "Du har #{@hp}hp kvar."
     if @hp < 0
       puts "Du dog, spelet är över :("
       @alive = false
@@ -431,6 +434,7 @@ def attack(monster_inf, hp) #20 == hp
     end
     puts "Skriv 'slå' om för att attackera fienden."
     input = gets.chomp
+    puts ""
     while input != "slå"
       puts "skriv slå inte #{input}"
       input = gets.chomp
@@ -451,6 +455,18 @@ def attack(monster_inf, hp) #20 == hp
   end 
   puts "----Slaget är över----"
 end # Du ska kunna attackera den attackerar och du kan skada den och jag kan bli skadad
+
+def help_list
+  puts "\n === KOMMANDON DU KAN ANVÄNDA ==="
+  puts "- upp / ner / höger / vänster: Flytta dig"
+  puts "- ta upp: Plocka upp föremål"
+  puts "- läs: Läs föremål som du plockat upp"
+  puts "- lager: Visa din inventarie"
+  puts "- spara: Spara spelet"
+  puts "- hjälp: Visa denna lista"
+  puts "- avsluta: Avsluta spelet
+  "
+end 
 
 def take()
   
