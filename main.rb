@@ -302,7 +302,7 @@ end
 def save_game()
   puts "What do you want the file to be named?"
   name = gets.chomp
-  new_row = "#{name}, #{@x}, #{@y}, #{@hp}, #{@inventory}"
+  new_row = "#{name}, #{@x}, #{@y}, #{@hp}, #{@inventory}\n"
   old_row = []
   old_row = File.readlines("save.txt")
   all_rows = [new_row] + old_row
@@ -315,7 +315,8 @@ def save_game()
   end 
   file.close
   puts "--------"
-  puts "Spelet har sparats" 
+  puts "Spelet har sparats
+  " 
   return # avsluta spelet
 end 
 
