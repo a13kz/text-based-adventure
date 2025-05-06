@@ -28,10 +28,11 @@ def start()
     @y = 2
     inventory = []
     save = false
-    game(@x, @y, hp, inventory, save)
+    game(@x, @y, @hp, inventory, save)
   else 
     puts "Vänligen välj det nummer av sparfil att fortsätta ditt äventyr med"
     i=0
+    
     lines = File.readlines("save.txt")
     while i < lines.length
       if lines[i] == "\n"
@@ -41,6 +42,7 @@ def start()
       end        
       i += 1
     end
+    input = gets.chomp
     while input != "1" && input != "2" && input != "3" 
       input = gets.chomp
       puts "Välj ett giltigt kommando inte #{input}"
@@ -124,42 +126,7 @@ def move_player(input)
   return
 end # ska kolla om det finns en möjlighet att gå dit
 
-def update()
-  while @alive
-    puts "#{@dungeon_map[@y][@x][0]}"
-    input = gets.chomp
-    if input == @operations[0]
-      ta_upp()
-    elsif input == @operations[1]
-      read()
-    elsif input == @operations[2]
-      puts "upp"
-      move_player(input)
-    elsif input == @operations[3]
-      puts "höger"
-      move_player(input)
-    elsif input == @operations[4]
-      puts "ner"
-      move_player(input)
-    elsif input == @operations[5]
-      puts "lager"
-    elsif input == @operations[6]
-      puts "vänster"
-      move_player(input)
-    elsif input == @operations[7]
-      puts "spara"
-      save_game()
-    elsif input == @operations[8]
-      help_list()
-    elsif input == @operations[9]
-      puts "avsluta"
-      exit
-    else
-      puts "du kan inte göra så"
-      puts "gör något man kan göra"
-    end
-  end
-end
+
 
 def check_room(y,x)
   puts "#{@dungeon_map[x][y][2]}" 
@@ -274,9 +241,9 @@ def game(x,y, hp, inventory, save)
     puts
     puts "---Save---"
     puts "Välkommen tillbaka!"
-    puts "Du är i #{place} och har #{hp} HP"
-    puts "Du har: #{inventory}"
-    @inventory = inventory
+    #puts "Du är i #{@x,@y} och har #{@hp} HP"
+    puts "Du har: #{@inventory}"
+    puts @inventory
   else
     puts "Du vaknar upp i en grotta"
     puts "Du minns ingenting..."
@@ -294,18 +261,11 @@ def game(x,y, hp, inventory, save)
     info = ["Du tar upp pappret från marken. Undrar om du kan läsa den","du har ingenting du kan läsa. Kanske borde du ta upp pappret från marken.
     ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
-    while i < @operations.length
-      if input == @operations[i]
-        puts info[i]
-      end
-      i+=1
-    end
-
     while input != @operations[0]
       input = gets.chomp
       while i < @operations.length
-        if input == @operations[i]
-          puts info[i]
+        if input == @operations[i]        
+          #puts info[i]
         end
         i+=1
       end
@@ -322,12 +282,6 @@ def game(x,y, hp, inventory, save)
     info = ["Du kan inte ta upp något","JAG HAR KIDNAPPAT DIG OCH PLACERAT DIG I DÖSKALLEGROTTAN. MUHAHAHAHA. DU KOMMER ALRIG KOMMA HÄR IFRÅN. Du kan försöka utforska grottan genom att gå höger, vänster, up och ner samt plocka upp saker du stötter på mmr. MEN EGENTLIGEN ÄR DET MENINGSLÖST HIHIHIHI.
     ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
-    while i < @operations.length
-      if input == @operations[i]
-        puts info[i]
-      end
-      i+=1
-    end
     while input != @operations[1]
       input = gets.chomp
       while i < @operations.length
@@ -338,18 +292,11 @@ def game(x,y, hp, inventory, save)
       end
     end
     puts info[1]
+    
+    
   end
 
   update()
-
-  if input == "help"
-    i = 0
-    while i < @operations.length
-      puts @operations[i]  
-      i += 1  
-    end
-  end
-
 end 
 
 def save_game()
@@ -383,13 +330,13 @@ def load_game(save_file)
   save = true
   index = save_file.to_i - 1
   row = lines[index].chomp
-  row_parts = row.split(", ")
+  row_parts = row.split(",")
   @x = row_parts[1]
   @y = row_parts[2]
   @hp = row_parts[3]
   inventory = row_parts[4]
 
-  game(place, hp, inventory, save) #"name,place,{hp},inventory"
+  game(@x,@y, @hp, inventory, save) #"name,place,{hp},inventory"
 end
 
 def spawn_monster()
@@ -480,8 +427,45 @@ end
 def quit()
   
 end
+
+def update()
+  while @alive
+    puts "update"
+    input = gets.chomp
+    if input == @operations[0]
+      ta_upp()
+    elsif input == @operations[1]
+      read()
+    elsif input == @operations[2]
+      puts "upp"
+      move_player(input)
+    elsif input == @operations[3]
+      puts "höger"
+      move_player(input)
+    elsif input == @operations[4]
+      puts "ner"
+      move_player(input)
+    elsif input == @operations[5]
+      puts "lager"
+    elsif input == @operations[6]
+      puts "vänster"
+      move_player("vänster")
+    elsif input == @operations[7]
+      puts "spara"
+      save_game()
+    elsif input == @operations[8]
+      help_list()
+    elsif input == @operations[9]
+      puts "avsluta"
+      exit
+    else
+      puts "du kan inte göra så"
+      puts "gör något man kan göra"
+    end
+  end
+end
 # spara en fil
 # Avslut med en nyckel för att komma ut
 
-check_room(4,4)
-#start()
+#check_room(4,4)
+start()
