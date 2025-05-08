@@ -23,6 +23,7 @@ def start()
     @y = 2
     inventory = []
     save = false
+    character_create()
     game(@x, @y, @hp, inventory, save)
   else 
     puts "\n=== Laddade sparfiler ==="
@@ -102,6 +103,19 @@ end
 
 @operations = ["ta upp","läs", "upp","höger","ner","lager", "vänster", "spara","hjälp","avsluta"]
 
+# Beskrivning:         ...
+# Argument 1:          ...
+# Argument 2:          ...
+#   etc
+# Return:              ...
+# Exempel:         
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...               
+# Datum: 2025-05-09
+# Namn: Sebatian
+
 def move_player(input)
   info_room = @dungeon_map[@y][@x]
   directions = info_room[1]
@@ -121,9 +135,7 @@ def move_player(input)
   puts "\n=== #{@dungeon_map[@y][@x][0]} ==="  
   check_room(@y,@x)
   return
-end # ska kolla om det finns en möjlighet att gå dit
-
-
+end 
 
 def check_room(y,x)
   puts "#{@dungeon_map[@x][@y][2]}" 
@@ -231,6 +243,19 @@ def check_room(y,x)
   end
 end
 
+# Beskrivning:         ...
+# Argument 1:          ...
+# Argument 2:          ...
+#   etc
+# Return:              ...
+# Exempel:         
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...               
+# Datum: 2025-05-09
+# Namn: 
+
 def game(x,y, hp, inventory, save)
 puts "\n === Spelet börjar ==="
   #Ska kanske vara någon annan stans
@@ -274,10 +299,10 @@ puts "\n === Spelet börjar ==="
     end
 
     info = ["Du kan inte ta upp något","\nPå det skrynkliga pappret står det med darrig handstil:
-  Jag har kidnappat dig och släpat dig till Döskalleslottets djupaste grotta... MUHAHAHAHA!  
+  Jag har kidnappat dig #{@name} och släpat dig till Döskalleslottets djupaste grotta... MUHAHAHAHA!  
   Du kommer aldrig att ta dig härifrån.
 
-  Visst, du kan försöka utforska grottan – gå åt höger, vänster, upp eller ner...  
+  Visst #{@name}, du kan försöka utforska grottan – gå åt höger, vänster, upp eller ner...  
   Plocka upp vad du hittar om du vill...
 
   ...men det är fullständigt meningslöst.  
@@ -300,6 +325,19 @@ puts "\n === Spelet börjar ==="
   update()
 end 
 
+# Beskrivning:         ...
+# Argument 1:          ...
+# Argument 2:          ...
+#   etc
+# Return:              ...
+# Exempel:         
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...               
+# Datum: 2025-05-09
+# Namn: Sebatian
+
 def save_game()
   puts "Ange namn för sparfil:"
   name = gets.chomp
@@ -320,6 +358,19 @@ def save_game()
   " 
   return # avsluta spelet
 end 
+
+# Beskrivning:         ...
+# Argument 1:          ...
+# Argument 2:          ...
+#   etc
+# Return:              ...
+# Exempel:         
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...               
+# Datum: 2025-05-09
+# Namn: Sebatian
 
 def load_game(save_file)
   while save_file != "1" && save_file != "2" && save_file != "3"
@@ -342,7 +393,7 @@ end
 
 def spawn_monster()
   slu = rand(1..7)
-  if slu == 1 || slu == 2
+  if slu == 2
     what_mons = rand(1..4)
     if what_mons == 1
       return ["golem", 10, 1..3]
@@ -354,15 +405,27 @@ def spawn_monster()
       return ["björn", 8, 1..3]
     end  #name, hp, attack
   elsif slu == 3
-    amount_hp = rand(3..4)
-    puts "Du hittade en helnings dyck"
-    puts "Du fick #{amount_hp}hp"
-    
+    amount_hp = rand(2..3)
+    puts "Du hittade en helnings dyck!"
+    puts "Du fick #{amount_hp} HP"
     return
   else 
     return nil
   end 
 end 
+
+# Beskrivning:         ...
+# Argument 1:          ...
+# Argument 2:          ...
+#   etc
+# Return:              ...
+# Exempel:         
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...
+# ...  ...  ...  ...               
+# Datum: 2025-05-09
+# Namn: Sebatian
 
 def attack(monster_inf, hp) #20 == hp
   puts "\nDu hamnade i en strid"
@@ -391,7 +454,7 @@ def attack(monster_inf, hp) #20 == hp
       puts "Skriv slå, inte #{input}"
       input = gets.chomp
     end
-    p_damage = rand(2..6)
+    p_damage = rand(@damage)
     mons_hp -= p_damage
     puts "Du gjorde #{p_damage} skada"
 
@@ -427,13 +490,10 @@ def character_create
   puts "--- Karaktär skapande ---"
   puts "Namn på karaktär:"
   @name = gets.chomp
-  puts "Vilken klass vill du att karaktären ska vara? "
-  puts "1 - Warrior: "
-  puts "" #Ska vara en all around charater
-  puts "2 - Assasin: "
-  puts "" #Mycket skada lite hälsa
-  puts "3 - Tank: "
-  puts "" #Mycket hälsa lite skada
+  puts "\nVilken klass vill du att #{@name} ska vara? "
+  puts "1 - Warrior: (Medium hälsa, medium skada)"
+  puts "2 - Assasin: (Lite hälsa, mycket skada)"
+  puts "3 - Tank: (Mycket hälsa, lite skada)"
   puts "Ange 1, 2 eller 3:"
   input = gets.chomp
 
@@ -441,16 +501,18 @@ def character_create
       puts "Välj ett giltigt kommando inte #{input}"
       input = gets.chomp
     end 
-
   if input == "1"
-    @hp = ""
-    @damage =  ""
+    @hp = "20"
+    @damage =  "2..6"
+    puts "Du skapade Warrior-karaktären #{@name} med #{@hp} HP och 2-6 i skada."
   elsif input == "2"
-    @hp = ""
-    @damage =  ""
+    @hp = "15"
+    @damage =  "3..8"
+    puts "Du skapade Assasin-karaktären #{@name} med #{@hp} HP och 3-8 i skada."
   else
-    @hp = ""
-    @damage = ""
+    @hp = "25"
+    @damage = "1..4"
+    puts "Du skapade Tank-karaktären #{@name} med #{@hp} HP och 1-4 i skada."
   end 
   return
 end 
