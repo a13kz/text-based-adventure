@@ -3,19 +3,21 @@
 @x = 2
 @y = 2
 @hp = 20
+@name = ""
+@damage = 1..3
 @alive = true
 
 def start()
   puts "=== Välkommen till The Ultimate Challenge ==="
-  puts "1. Ladda ett tidigare spel"
-  puts "2. Starta ett nytt äventyr"
+  puts "1. Starta ett nytt äventyr"
+  puts "2. Ladda ett tidigare spel"
   puts "Ange 1 eller 2:"
   input = gets.chomp
   while input != "1" && input != "2" 
-    input = gets.chomp
     puts "Välj ett giltigt kommando inte #{input}"
+    input = gets.chomp
   end
-  if input.to_i == 2
+  if input.to_i == 1
     @hp = 20 
     @x = 2
     @y = 2
@@ -38,8 +40,8 @@ def start()
     puts "Vänligen välj det nummer av sparfil att fortsätta ditt äventyr med (1-3):"
     input = gets.chomp
     while input != "1" && input != "2" && input != "3" 
-      input = gets.chomp
       puts "Välj ett giltigt kommando inte #{input}"
+      input = gets.chomp
     end
     load_game(input)
   end 
@@ -124,7 +126,7 @@ end # ska kolla om det finns en möjlighet att gå dit
 
 
 def check_room(y,x)
-  puts "#{@dungeon_map[x][y][2]}" 
+  puts "#{@dungeon_map[@x][@y][2]}" 
   if y == 0 && x == 0
     there_att = spawn_monster()
     if there_att != nil
@@ -239,7 +241,7 @@ puts "\n === Spelet börjar ==="
     puts "#{@dungeon_map[y][x][2]}"
   else
     puts "\nDu vaknar upp i en grotta. Du minns ingenting..."
-    puts "Ett skrynkligt papper ligger på marken framför dig."
+    puts "Ett skrynkligt papper ligger på marken framför dig. (Testa att `ta upp` pappret)"
     input = gets.chomp.downcase
 
     while !@operations.include?(input)
@@ -375,7 +377,8 @@ def attack(monster_inf, hp) #20 == hp
     puts "#{mons_name} attackerar dig och orsakar #{damage} skada!"
     puts "Du har #{@hp}HP kvar."
 
-    if @hp < 0
+    if @hp <= 0
+      puts "=== Du förlorade all din hälsa ==="
       puts "Du föll i striden... Spelet är över."
       @alive = false
       return
@@ -420,18 +423,37 @@ def help_list
   "
 end 
 
-def take()
-  
-end
+def character_create
+  puts "--- Karaktär skapande ---"
+  puts "Namn på karaktär:"
+  @name = gets.chomp
+  puts "Vilken klass vill du att karaktären ska vara? "
+  puts "1 - Warrior: "
+  puts "" #Ska vara en all around charater
+  puts "2 - Assasin: "
+  puts "" #Mycket skada lite hälsa
+  puts "3 - Tank: "
+  puts "" #Mycket hälsa lite skada
+  puts "Ange 1, 2 eller 3:"
+  input = gets.chomp
 
-def read()
+    while input != "1" && input != "2" && input != "3"
+      puts "Välj ett giltigt kommando inte #{input}"
+      input = gets.chomp
+    end 
 
-end
-
-
-def quit()
-  
-end
+  if input == "1"
+    @hp = ""
+    @damage =  ""
+  elsif input == "2"
+    @hp = ""
+    @damage =  ""
+  else
+    @hp = ""
+    @damage = ""
+  end 
+  return
+end 
 
 def update()
   while @alive
