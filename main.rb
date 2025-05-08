@@ -5,13 +5,6 @@
 @hp = 20
 @alive = true
 
-def setup()
-  puts "Vänligen välj en spar fil"
-  input = gets.chomp
-  start_place = File.read
-  start()
-end
-
 def start()
   puts "=== Välkommen till The Ultimate Challenge ==="
   puts "1. Ladda ett tidigare spel"
@@ -30,7 +23,7 @@ def start()
     save = false
     game(@x, @y, @hp, inventory, save)
   else 
-    puts "Vänligen välj det nummer av sparfil att fortsätta ditt äventyr med"
+    puts "\n=== Laddade sparfiler ==="
     i=0
     
     lines = File.readlines("save.txt")
@@ -42,6 +35,7 @@ def start()
       end        
       i += 1
     end
+    puts "Vänligen välj det nummer av sparfil att fortsätta ditt äventyr med (1-3):"
     input = gets.chomp
     while input != "1" && input != "2" && input != "3" 
       input = gets.chomp
@@ -118,10 +112,11 @@ def move_player(input)
   elsif input == "ner" && directions.include?("ner")
     @y+= 1
   else 
-    puts "Du kan inte gå åt det hållet"
+    puts "\n=== Samma rum ==="
+    puts "\nDu kan inte gå åt det hållet. En vägg blockerar vägen."
     return
   end
-  puts "Du går till #{@dungeon_map[@y][@x][0]}"  
+  puts "\n=== #{@dungeon_map[@y][@x][0]} ==="  
   check_room(@y,@x)
   return
 end # ska kolla om det finns en möjlighet att gå dit
@@ -169,7 +164,7 @@ def check_room(y,x)
       attack(there_att,@hp)
     end 
   elsif y == 2 && x == 2
-    puts "start"
+    
   elsif y == 2 && x == 3
     
     there_att = spawn_monster()
@@ -235,19 +230,16 @@ def check_room(y,x)
 end
 
 def game(x,y, hp, inventory, save)
-
+puts "\n === Spelet börjar ==="
   #Ska kanske vara någon annan stans
   if save == true
-    puts
-    puts "---Save---"
-    puts "Välkommen tillbaka!"
-    #puts "Du är i #{@x,@y} och har #{@hp} HP"
-    puts "Du har: #{@inventory}"
-    puts @inventory
+    puts "\n---Välkommen tillbaka!---"
+    puts "Du har #{@hp} HP"
+    puts "Du befinner dig i: #{@dungeon_map[y][x][0]}"
+    puts "#{@dungeon_map[y][x][2]}"
   else
-    puts "Du vaknar upp i en grotta"
-    puts "Du minns ingenting..."
-    puts "Du ser ett skrynkligt papper på golvet"
+    puts "\nDu vaknar upp i en grotta. Du minns ingenting..."
+    puts "Ett skrynkligt papper ligger på marken framför dig."
     input = gets.chomp.downcase
 
     while !@operations.include?(input)
@@ -258,7 +250,7 @@ def game(x,y, hp, inventory, save)
     end
     i = 0    
     
-    info = ["Du tar upp pappret från marken. Undrar om du kan läsa den","du har ingenting du kan läsa. Kanske borde du ta upp pappret från marken.
+    info = ["\nDu tar upp pappret. Det kanske går att läsa...","du har ingenting du kan läsa. Kanske borde du ta upp pappret från marken.
     ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
     while input != @operations[0]
@@ -279,8 +271,16 @@ def game(x,y, hp, inventory, save)
       input = gets.chomp
     end
 
-    info = ["Du kan inte ta upp något","JAG HAR KIDNAPPAT DIG OCH PLACERAT DIG I DÖSKALLEGROTTAN. MUHAHAHAHA. DU KOMMER ALRIG KOMMA HÄR IFRÅN. Du kan försöka utforska grottan genom att gå höger, vänster, up och ner samt plocka upp saker du stötter på mmr. MEN EGENTLIGEN ÄR DET MENINGSLÖST HIHIHIHI.
-    ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
+    info = ["Du kan inte ta upp något","\nPå det skrynkliga pappret står det med darrig handstil:
+  Jag har kidnappat dig och släpat dig till Döskalleslottets djupaste grotta... MUHAHAHAHA!  
+  Du kommer aldrig att ta dig härifrån.
+
+  Visst, du kan försöka utforska grottan – gå åt höger, vänster, upp eller ner...  
+  Plocka upp vad du hittar om du vill...
+
+  ...men det är fullständigt meningslöst.  
+  HIHIHIHI.
+  ~TEXT\n", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
     while input != @operations[1]
       input = gets.chomp
@@ -291,16 +291,15 @@ def game(x,y, hp, inventory, save)
         i+=1
       end
     end
-    puts info[1]
-    
-    
+    puts "#{info[1]}"
+    puts "Du tittar först nu runt i rummet och ser: #{@dungeon_map[y][x][2]}"
   end
 
   update()
 end 
 
 def save_game()
-  puts "What do you want the file to be named?"
+  puts "Ange namn för sparfil:"
   name = gets.chomp
   new_row = "#{name}, #{@x}, #{@y}, #{@hp}, #{@inventory}\n"
   old_row = []
@@ -314,14 +313,13 @@ def save_game()
     i += 1
   end 
   file.close
-  puts "--------"
+  puts "\n--------"
   puts "Spelet har sparats
   " 
   return # avsluta spelet
 end 
 
 def load_game(save_file)
-
   while save_file != "1" && save_file != "2" && save_file != "3"
     puts "Skriv ett giltigt kommando, inte #{save_file}"
     save_file = gets.chomp
@@ -332,9 +330,9 @@ def load_game(save_file)
   index = save_file.to_i - 1
   row = lines[index].chomp
   row_parts = row.split(",")
-  @x = row_parts[1]
-  @y = row_parts[2]
-  @hp = row_parts[3]
+  @x = row_parts[1].to_i
+  @y = row_parts[2].to_i
+  @hp = row_parts[3].to_i
   inventory = row_parts[4]
 
   game(@x,@y, @hp, inventory, save) #"name,place,{hp},inventory"
@@ -365,41 +363,46 @@ def spawn_monster()
 end 
 
 def attack(monster_inf, hp) #20 == hp
+  puts "\nDu hamnade i en strid"
   puts "----STRID----"
   mons_name = monster_inf[0]
   mons_hp = monster_inf[1]
-  puts "En #{mons_name} attackerar dig!\n\n"
+  puts "En #{mons_name} dyker fram ur skuggorna och anfaller dig!\n\n"
   while 0 < mons_hp
-    puts "#{mons_name} har #{mons_hp}hp"
+    puts "#{mons_name} har #{mons_hp} HP kvar."
     damage = rand(monster_inf[2])
     @hp -= damage
-    puts "Du tog #{damage} skada!"
-    puts "Du har #{@hp}hp kvar."
+    puts "#{mons_name} attackerar dig och orsakar #{damage} skada!"
+    puts "Du har #{@hp}HP kvar."
+
     if @hp < 0
-      puts "Du dog, spelet är över :("
+      puts "Du föll i striden... Spelet är över."
       @alive = false
       return
     end
-    puts "Skriv 'slå' om för att attackera fienden."
+
+    puts "Skriv 'slå' för att slå tillbaka!"
     input = gets.chomp
     puts ""
     while input != "slå"
-      puts "skriv slå inte #{input}"
+      puts "Skriv slå, inte #{input}"
       input = gets.chomp
     end
     p_damage = rand(2..6)
     mons_hp -= p_damage
     puts "Du gjorde #{p_damage} skada"
+
     if mons_hp < 0
-      puts "Du besegrade en #{mons_name}!"
+      puts "Du besegrat #{mons_name}!"
     end
+
   end 
   if @hp > 15
-    puts "Du har #{@hp}hp kvar"
+    puts "Du klarade dig bra – #{@hp} HP kvar."
   elsif @hp >= 7
-    puts "Du har #{@hp}hp kvar. Var mer försiktig nästa gång"
+    puts "Du klarade det, men du är sårad – #{@hp} HP kvar. Var försiktigare nästa gång!"
   else
-    puts "Du måste hitta en läkande dryck NU!! Du har endast #{@hp}hp kvar!"
+    puts "Du är nära döden – endast #{@hp} HP kvar! Hitta en läkande dryck omedelbart!"
   end 
   puts "----Slaget är över----"
 end # Du ska kunna attackera den attackerar och du kan skada den och jag kan bli skadad
@@ -431,37 +434,29 @@ end
 
 def update()
   while @alive
-    puts "update"
     input = gets.chomp
     if input == @operations[0]
       ta_upp()
     elsif input == @operations[1]
       read()
     elsif input == @operations[2]
-      puts "upp"
       move_player(input)
     elsif input == @operations[3]
-      puts "höger"
       move_player(input)
     elsif input == @operations[4]
-      puts "ner"
       move_player(input)
     elsif input == @operations[5]
-      puts "lager"
     elsif input == @operations[6]
-      puts "vänster"
       move_player("vänster")
     elsif input == @operations[7]
-      puts "spara"
       save_game()
     elsif input == @operations[8]
       help_list()
     elsif input == @operations[9]
-      puts "avsluta"
+      puts "\nTack för att du spelade!"
       exit
     else
-      puts "du kan inte göra så"
-      puts "gör något man kan göra"
+      puts "Ogiltigt kommando: #{input}. Skriv 'hjälp' för en lista."
     end
   end
 end
