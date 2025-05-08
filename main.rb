@@ -80,7 +80,7 @@ end
     ["Rum 4,1", ["upp", "höger", "vänster"], "Ett träd växer genom taket. En väg går tillbaka uppåt, men du ser också stigar åt både vänster och höger."],
     ["Escape rum 4,2", ["vänster"]],
     ["EMPTY 4,3", [""]],
-    ["Rum 4,4", ["up"], "En kammare fylld med sarkofager. En trappa leder upp mot mörkret."]
+    ["Rum 4,4", ["upp"], "En kammare fylld med sarkofager. En trappa leder upp mot mörkret."]
   ]
 ] #AI har skrivit beskrivningen till rumen
 
@@ -113,7 +113,7 @@ def move_player(input)
     @y+= 1
   else 
     puts "\n=== Samma rum ==="
-    puts "\nDu kan inte gå åt det hållet. En vägg blockerar vägen."
+    puts "Du kan inte gå åt det hållet. En vägg blockerar vägen."
     return
   end
   puts "\n=== #{@dungeon_map[@y][@x][0]} ==="  
@@ -405,6 +405,7 @@ def attack(monster_inf, hp) #20 == hp
     puts "Du är nära döden – endast #{@hp} HP kvar! Hitta en läkande dryck omedelbart!"
   end 
   puts "----Slaget är över----"
+  puts "\n#{@dungeon_map[@x][@y][2]}"
 end # Du ska kunna attackera den attackerar och du kan skada den och jag kan bli skadad
 
 def help_list
