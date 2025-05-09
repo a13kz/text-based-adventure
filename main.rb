@@ -8,15 +8,7 @@
 @alive = true
 @inventory = ["key"]
 
-# Beskrivning: Funktionen tar genom gets.chomp genom en sträng med input från användaren. Funktionen beräknar vart spelaren är och beräknar genom en array 'directions' vilka riktningar som är tillåtna för spelaren att röra sig i.
-# Argument: Sträng - anger riktningen spelaren rör sig i.
-#   etc
-# Return: nil
-# Exempel:         
-# move_player("vänster") ==> global variabel '@x' förändras
-# move_player("upp") ==> global variabel '@y' förändras      
-# Datum: 2025-05-09
-# Namn: Alexander, Sebatian
+
 
 def start()
   puts "=== Välkommen till The Ultimate Challenge ==="
@@ -121,7 +113,7 @@ end
 # move_player("vänster") ==> global variabel '@x' förändras ifall arrayen 'directions' tillåter det
 # move_player("upp") ==> global variabel '@y' förändras ifall arrayen 'directions' tillåter det
 # Datum: 2025-05-09
-# Namn: Alexander, Sebatian
+# Namn: Alexander, Sebastian
 
 def move_player(input)
   info_room = @dungeon_map[@y][@x]
@@ -170,7 +162,7 @@ end
 # check_room(0,0) ==> Gamla ben täcker golvet. En väg leder uppåt, en annan slingrar sig till vänster. Du ser även en öppning till höger.
 # check_room(0,0) ==> Gamla ben täcker golvet. En väg leder uppåt, en annan slingrar sig till vänster. Du ser även en öppning till höger.
 # Datum: 2025-05-09
-# Namn: Alexander, Sebatian
+# Namn: Alexander, Sebastian
 
 
 def check_room(y,x)
@@ -286,22 +278,8 @@ def check_room(y,x)
   end
 end
 
-# Beskrivning: 
-# Argument 1:          ...
-# Argument 2:          ...
-#   etc
-# Return:              ...
-# Exempel:         
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...               
-# Datum: 2025-05-09
-# Namn: 
-
 def game(save)
 puts "\n === Spelet börjar ==="
-  #Ska kanske vara någon annan stans
   if save == true
     puts "\n---Välkommen tillbaka #{@name}!---"
     puts "Du har #{@hp} HP"
@@ -357,16 +335,16 @@ puts "\n === Spelet börjar ==="
 end 
 
 
-# Beskrivning: Gör om alla globala värden som ska sparas till en lång gemensam sträng. Skriver in den långa stringen i save.txt filen  
-# Argument 1: Tar en sträng som input från användaren, Ska vara namnet på sparfilen.
-# Return: 
+# Beskrivning: Gör om alla globala värden som ska sparas till en gemensam sträng. Skriver över strängen till save.txt  
+# Argument 1: Sträng - input från användaren för namn på för ny fil
+# Return: nil/information om användarens input
 # Exempel:
-# ...  ...  ...  ...
+# save_game ==> Ange namn för sparfil: 'save_fil_1' ==> Spelet har sparats
 # ...  ...  ...  ...
 # ...  ...  ...  ...
 # ...  ...  ...  ...               
 # Datum: 2025-05-09
-# Namn: Sebatian, Alexander
+# Namn: Alexander, Sebastian
 
 def save_game()
   puts "Ange namn för sparfil:"
@@ -389,15 +367,14 @@ def save_game()
   return # avsluta spelet
 end 
 
-# Beskrivning: Tar sparad text i save.txt filen som är värden i spelet. Tilldelar dessa värden till respektive global variabel.
-# Argument 1: Användarens input 
-#   etc
-# Return: Retunerar 
+# Beskrivning: Hämtar data från save.txt för definition av x,y,hp,inventory,damage och name. Dessa värden tilldelas til respektive global variabel.
+# Argument 1: Sträng - användarinput för index av filen som ska väljas
+#
+# Return: tilldelar värde till globala variabler @x,@y,@hp,@inventory,@damage,@name
 # Exempel:         
-# load_game(1) => @x = row_parts[1].to_i, @y = row_parts[2].to_i, @hp = row_parts[3].to_i, inventory = row_parts[4], @damage = row_parts[5].to_i, @name = row_parts[6]
-# ...  ...  ...  ...              
+# load_game(1) => @x = row_parts[1].to_i, @y = row_parts[2].to_i, @hp = row_parts[3].to_i, inventory = row_parts[4], @damage = row_parts[5].to_i, @name = row_parts[6]           
 # Datum: 2025-05-09
-# Namn: Sebatian
+# Namn: Alexander, Sebastian
 
 def load_game(save_file)
   while save_file != "1" && save_file != "2" && save_file != "3"
@@ -418,13 +395,16 @@ def load_game(save_file)
   @name = row_parts[6]
   game(save)
 end
-# Beskrivning: Funktionen beräknar sannolikheten att ett 'monster' ska skapas och returnerar dess egenskaper.
-# Argument
-# Return: array/nil: array med sträng för beskrivning av 'monstret' och integers för dess egenskaper/nil ifall monster ej skapas
+
+# Beskrivning: Funktionen beräknar sannolikheten att ett 'monster' skapas och returnerar dess egenskaper eller ifall en 'helningsdryck' ska skapas
+# Argument: inga argument tas
+# Return: array/nil: array med sträng för beskrivning av 'monstret' och integers för dess egenskaper, förändrar globala variablen @hp eller nil ifall monster ej skapas
 # Exempel:         
-# 
+# p spawn_monster() ==> Du hittade en helnings dyck! Du fick 2 HP
+# p spawn_monster() ==> nil
+# p spawn_monster() ==> ["jätte", 15, 2..3]
 # Datum: 2025-05-09
-# Namn: Alexander, Sebatian
+# Namn: Alexander, Sebastian
 
 def spawn_monster()
   slu = rand(1..7)
@@ -443,26 +423,15 @@ def spawn_monster()
     amount_hp = rand(2..3)
     puts "Du hittade en helnings dyck!"
     puts "Du fick #{amount_hp} HP"
+    @hp += amount_hp
     return
   else 
     return nil
   end 
 end 
 
-# Beskrivning:         ...
-# Argument 1:          ...
-# Argument 2:          ...
-#   etc
-# Return:              ...
-# Exempel:         
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...               
-# Datum: 2025-05-09
-# Namn: Sebatian
 
-def attack(monster_inf, hp) #20 == hp
+def attack(monster_inf, hp)
   puts "\nDu hamnade i en strid"
   puts "----STRID----"
   mons_name = monster_inf[0]
@@ -580,4 +549,3 @@ def update()
 end
 
 start()
-#check_room(0,0)
