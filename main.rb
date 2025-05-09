@@ -154,40 +154,40 @@ def check_room(y,x)
   if y == 0 && x == 0
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att, @hp)
+      attack(there_att)
     end
   elsif y == 0 && x == 1
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
   elsif y == 0 && x == 2
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
     puts "Wow en nyckel! Nu kanske du kan komma härifrån"
     find_key()
   elsif y == 1 && x == 1
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end
   elsif y == 1 && x == 2
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end  
   elsif y == 2 && x == 0
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
 
   elsif y == 2 && x == 1
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
 
   elsif y == 2 && x == 2 
@@ -195,62 +195,62 @@ def check_room(y,x)
   elsif y == 2 && x == 3
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
 
   elsif y == 2 && x == 4
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end
 
   elsif y == 3 && x == 1
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end    
 
   elsif y == 3 && x == 2
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
   
   elsif y == 3 && x == 3
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
 
   elsif y == 3 && x == 4
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
 
   elsif y == 4 && x == 0
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
   
   elsif y == 4 && x == 1
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end 
     
   elsif y == 4 && x == 2
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att,@hp)
+      attack(there_att)
     end
     escape()
 
   elsif y == 4 && x == 4
     there_att = spawn_monster()
     if there_att != nil
-      attack(there_att, @hp)
+      attack(there_att)
     end 
     
   else
@@ -398,7 +398,7 @@ def spawn_monster()
     amount_hp = rand(2..3)
     puts "Du hittade en helnings dyck!"
     puts "Du fick #{amount_hp} HP"
-    #@hp += amount_hp
+    @hp += amount_hp
     return
   else 
     return nil
@@ -406,7 +406,7 @@ def spawn_monster()
 end 
 
 
-def attack(monster_inf, hp)
+def attack(monster_inf)
   puts "\nDu hamnade i en strid"
   puts "----STRID----"
   mons_name = monster_inf[0]
