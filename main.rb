@@ -6,9 +6,7 @@
 @name = ""
 @damage = 1..3
 @alive = true
-@inventory = ["key"]
-
-
+@inventory = []
 
 def start()
   puts "=== Välkommen till The Ultimate Challenge ==="
@@ -92,18 +90,6 @@ end
   ]
 ] #AI har skrivit beskrivningen till rumen
 
-@operations = ["ta upp","läs", "up","höger","ner","lager", "vänster", "spara"]
-
-def find_i(arr, item)
-  i = 0
-  while i < arr.length
-    if arr[i] == item
-      return i
-    end
-    i+=1
-  end
-end
-
 @operations = ["ta upp","läs", "upp","höger","ner","lager", "vänster", "spara","hjälp","avsluta"]
 
 # Beskrivning: Funktionen beräknar med strängen 'argument1' vart spelaren är och genom en array 'directions' vilka riktningar som är tillåtna för spelaren att röra sig i.
@@ -160,11 +146,9 @@ end
 # Return: Sträng - beskrivning av position
 # Exempel:         
 # check_room(0,0) ==> Gamla ben täcker golvet. En väg leder uppåt, en annan slingrar sig till vänster. Du ser även en öppning till höger.
-# check_room(0,0) ==> Gamla ben täcker golvet. En väg leder uppåt, en annan slingrar sig till vänster. Du ser även en öppning till höger.
+# check_room(3,1) ==> En lång gång där klomärken pryder väggarna. Du ser en trappa ner och ett svagt sken från höger.
 # Datum: 2025-05-09
 # Namn: Alexander, Sebastian
-
-
 def check_room(y,x)
   puts "#{@dungeon_map[@y][@x][2]}"
   if y == 0 && x == 0
@@ -177,7 +161,6 @@ def check_room(y,x)
     if there_att != nil
       attack(there_att,@hp)
     end 
-
   elsif y == 0 && x == 2
     there_att = spawn_monster()
     if there_att != nil
@@ -185,20 +168,16 @@ def check_room(y,x)
     end 
     puts "Wow en nyckel! Nu kanske du kan komma härifrån"
     find_key()
-
   elsif y == 1 && x == 1
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
-    end 
-
-
+    end
   elsif y == 1 && x == 2
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end  
-
   elsif y == 2 && x == 0
     there_att = spawn_monster()
     if there_att != nil
@@ -297,10 +276,6 @@ puts "\n === Spelet börjar ==="
       input = gets.chomp.downcase
     end
     i = 0    
-    
-    info = ["\nDu tar upp pappret. Det kanske går att läsa...","du har ingenting du kan läsa. Kanske borde du ta upp pappret från marken.
-    ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
-    "]
     while input != @operations[0]
       puts "Nja sådär borde du inte göra... Du borde VERKLIGEN ta upp den lappen."
       input = gets.chomp
@@ -407,8 +382,8 @@ end
 # Namn: Alexander, Sebastian
 
 def spawn_monster()
-  slu = rand(1..7)
-  if slu == 2
+  slu = rand(1..4)
+  if slu == 2 || slu == 1
     what_mons = rand(1..4)
     if what_mons == 1
       return ["golem", 10, 1..3]
@@ -423,7 +398,7 @@ def spawn_monster()
     amount_hp = rand(2..3)
     puts "Du hittade en helnings dyck!"
     puts "Du fick #{amount_hp} HP"
-    @hp += amount_hp
+    #@hp += amount_hp
     return
   else 
     return nil
