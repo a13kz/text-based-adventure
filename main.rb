@@ -6,6 +6,17 @@
 @name = ""
 @damage = 1..3
 @alive = true
+@inventory = ["key"]
+
+# Beskrivning: Funktionen tar genom gets.chomp genom en sträng med input från användaren. Funktionen beräknar vart spelaren är och beräknar genom en array 'directions' vilka riktningar som är tillåtna för spelaren att röra sig i.
+# Argument: Sträng - anger riktningen spelaren rör sig i.
+#   etc
+# Return: nil
+# Exempel:         
+# move_player("vänster") ==> global variabel '@x' förändras
+# move_player("upp") ==> global variabel '@y' förändras      
+# Datum: 2025-05-09
+# Namn: Alexander, Sebatian
 
 def start()
   puts "=== Välkommen till The Ultimate Challenge ==="
@@ -24,7 +35,7 @@ def start()
     inventory = []
     save = false
     character_create()
-    game(@x, @y, @hp, inventory, save)
+    game(save)
   else 
     puts "\n=== Laddade sparfiler ==="
     i=0
@@ -48,6 +59,8 @@ def start()
   end 
 end
 
+
+# Array för hur spelplanen ser ut
 @dungeon_map = 
 [
   [ 
@@ -87,8 +100,6 @@ end
   ]
 ] #AI har skrivit beskrivningen till rumen
 
-@pick_up_versions = ["ta up","ta","plocka upp"]
-@inventory_versions = ["lager","inventory","väska"]
 @operations = ["ta upp","läs", "up","höger","ner","lager", "vänster", "spara"]
 
 def find_i(arr, item)
@@ -103,18 +114,14 @@ end
 
 @operations = ["ta upp","läs", "upp","höger","ner","lager", "vänster", "spara","hjälp","avsluta"]
 
-# Beskrivning:         ...
-# Argument 1:          ...
-# Argument 2:          ...
-#   etc
-# Return:              ...
+# Beskrivning: Funktionen beräknar med strängen 'argument1' vart spelaren är och genom en array 'directions' vilka riktningar som är tillåtna för spelaren att röra sig i.
+# Argument1: Sträng - anger riktningen spelaren rör sig i.
+# Return: förändring av @x eller @y
 # Exempel:         
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...               
+# move_player("vänster") ==> global variabel '@x' förändras ifall arrayen 'directions' tillåter det
+# move_player("upp") ==> global variabel '@y' förändras ifall arrayen 'directions' tillåter det
 # Datum: 2025-05-09
-# Namn: Sebatian
+# Namn: Alexander, Sebatian
 
 def move_player(input)
   info_room = @dungeon_map[@y][@x]
@@ -137,113 +144,149 @@ def move_player(input)
   return
 end 
 
+def find_key()
+  puts "Nu kan du ta nyckeln"
+  input = gets.chomp.downcase
+  if input == "ta upp"
+    puts "Du tog upp nyckeln"
+    @inventory << "key"
+  else
+    puts "Ta upp nyckeln så du kan komma ut"
+  end
+
+end
+
+def escape()
+  if @inventory.include?("key")
+    puts "YAY! Du flydde från grottan."
+  end
+end
+
+# Beskrivning: Funktionen beräknar genom spelarens koordinater dess position och kallar på funktionen 'spawn_monster' för att beräkna ifall ett 'monster' ska skapas samt ifall spelaren befinner sig i rum viktiga för spelet
+# Argument1: Integer - anger spelarens nuvarande x-koordinat
+# Argument2: Integer - anger spelarens nuvarande y-koordinat
+# Return: Sträng - beskrivning av position
+# Exempel:         
+# check_room(0,0) ==> Gamla ben täcker golvet. En väg leder uppåt, en annan slingrar sig till vänster. Du ser även en öppning till höger.
+# check_room(0,0) ==> Gamla ben täcker golvet. En väg leder uppåt, en annan slingrar sig till vänster. Du ser även en öppning till höger.
+# Datum: 2025-05-09
+# Namn: Alexander, Sebatian
+
+
 def check_room(y,x)
-  puts "#{@dungeon_map[@x][@y][2]}" 
+  puts "#{@dungeon_map[@y][@x][2]}"
   if y == 0 && x == 0
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att, @hp)
-    end 
+    end
   elsif y == 0 && x == 1
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+
   elsif y == 0 && x == 2
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+    puts "Wow en nyckel! Nu kanske du kan komma härifrån"
+    find_key()
+
   elsif y == 1 && x == 1
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+
+
   elsif y == 1 && x == 2
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
-    end 
+    end  
+
   elsif y == 2 && x == 0
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+
   elsif y == 2 && x == 1
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
-  elsif y == 2 && x == 2
-    
+
+  elsif y == 2 && x == 2 
+
   elsif y == 2 && x == 3
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+
   elsif y == 2 && x == 4
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
-    end 
+    end
+
   elsif y == 3 && x == 1
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
-    end 
+    end    
+
   elsif y == 3 && x == 2
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+  
   elsif y == 3 && x == 3
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+
   elsif y == 3 && x == 4
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+
   elsif y == 4 && x == 0
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+  
   elsif y == 4 && x == 1
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
     end 
+    
   elsif y == 4 && x == 2
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att,@hp)
-    end 
+    end
+    escape()
+
   elsif y == 4 && x == 4
-    
     there_att = spawn_monster()
     if there_att != nil
       attack(there_att, @hp)
     end 
+    
   else
   end
 end
 
-# Beskrivning:         ...
+# Beskrivning: 
 # Argument 1:          ...
 # Argument 2:          ...
 #   etc
@@ -256,18 +299,18 @@ end
 # Datum: 2025-05-09
 # Namn: 
 
-def game(x,y, hp, inventory, save)
+def game(save)
 puts "\n === Spelet börjar ==="
   #Ska kanske vara någon annan stans
   if save == true
-    puts "\n---Välkommen tillbaka!---"
+    puts "\n---Välkommen tillbaka #{@name}!---"
     puts "Du har #{@hp} HP"
-    puts "Du befinner dig i: #{@dungeon_map[y][x][0]}"
-    puts "#{@dungeon_map[y][x][2]}"
+    puts "Du befinner dig i: #{@dungeon_map[@y][@x][0]}"
+    puts "#{@dungeon_map[@y][@x][2]}"
   else
     puts "\nDu vaknar upp i en grotta. Du minns ingenting..."
     puts "Ett skrynkligt papper ligger på marken framför dig. (Testa att `ta upp` pappret)"
-    input = gets.chomp.downcase
+    input = gets.chomp.downcase 
 
     while !@operations.include?(input)
       puts "Du kan inte göra så"
@@ -281,15 +324,10 @@ puts "\n === Spelet börjar ==="
     ", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
     "]
     while input != @operations[0]
+      puts "Nja sådär borde du inte göra... Du borde VERKLIGEN ta upp den lappen."
       input = gets.chomp
-      while i < @operations.length
-        if input == @operations[i]        
-          #puts info[i]
-        end
-        i+=1
-      end
     end
-    puts info[0]
+    puts "\nDu tar upp pappret. Det kanske går att läsa..."
     
     input = gets.chomp.downcase
     while !@operations.include?(input)
@@ -297,8 +335,11 @@ puts "\n === Spelet börjar ==="
       puts "gör någonting som du kan göra"
       input = gets.chomp
     end
-
-    info = ["Du kan inte ta upp något","\nPå det skrynkliga pappret står det med darrig handstil:
+    while input != @operations[1]
+      puts "Nja, du borde VERKLIGEN läsa den lappen"
+      input = gets.chomp
+    end
+    puts "\nPå det skrynkliga pappret står det med darrig handstil:
   Jag har kidnappat dig #{@name} och släpat dig till Döskalleslottets djupaste grotta... MUHAHAHAHA!  
   Du kommer aldrig att ta dig härifrån.
 
@@ -307,41 +348,30 @@ puts "\n === Spelet börjar ==="
 
   ...men det är fullständigt meningslöst.  
   HIHIHIHI.
-  ~TEXT\n", "Du undersökte rummet uppåt, men du kanske skulle läst den där lappen
-    "]
-    while input != @operations[1]
-      input = gets.chomp
-      while i < @operations.length
-        if input == @operations[i]
-          puts info[i]
-        end
-        i+=1
-      end
-    end
-    puts "#{info[1]}"
-    puts "Du tittar först nu runt i rummet och ser: #{@dungeon_map[y][x][2]}"
+  ~TEXT\n"
+
+    puts "Du tittar först nu runt i rummet och ser: #{@dungeon_map[@y][@x][2]}"
   end
 
   update()
 end 
 
-# Beskrivning:         ...
-# Argument 1:          ...
-# Argument 2:          ...
-#   etc
-# Return:              ...
-# Exempel:         
+
+# Beskrivning: Gör om alla globala värden som ska sparas till en lång gemensam sträng. Skriver in den långa stringen i save.txt filen  
+# Argument 1: Tar en sträng som input från användaren, Ska vara namnet på sparfilen.
+# Return: 
+# Exempel:
 # ...  ...  ...  ...
 # ...  ...  ...  ...
 # ...  ...  ...  ...
 # ...  ...  ...  ...               
 # Datum: 2025-05-09
-# Namn: Sebatian
+# Namn: Sebatian, Alexander
 
 def save_game()
   puts "Ange namn för sparfil:"
   name = gets.chomp
-  new_row = "#{name}, #{@x}, #{@y}, #{@hp}, #{@inventory}\n"
+  new_row = "#{name}, #{@x}, #{@y}, #{@hp}, #{@inventory}, #{@damage}, #{@name}\n"
   old_row = []
   old_row = File.readlines("save.txt")
   all_rows = [new_row] + old_row
@@ -359,16 +389,13 @@ def save_game()
   return # avsluta spelet
 end 
 
-# Beskrivning:         ...
-# Argument 1:          ...
-# Argument 2:          ...
+# Beskrivning: Tar sparad text i save.txt filen som är värden i spelet. Tilldelar dessa värden till respektive global variabel.
+# Argument 1: Användarens input 
 #   etc
-# Return:              ...
+# Return: Retunerar 
 # Exempel:         
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...
-# ...  ...  ...  ...               
+# load_game(1) => @x = row_parts[1].to_i, @y = row_parts[2].to_i, @hp = row_parts[3].to_i, inventory = row_parts[4], @damage = row_parts[5].to_i, @name = row_parts[6]
+# ...  ...  ...  ...              
 # Datum: 2025-05-09
 # Namn: Sebatian
 
@@ -386,10 +413,18 @@ def load_game(save_file)
   @x = row_parts[1].to_i
   @y = row_parts[2].to_i
   @hp = row_parts[3].to_i
-  inventory = row_parts[4]
-
-  game(@x,@y, @hp, inventory, save) #"name,place,{hp},inventory"
+  @inventory = row_parts[4]
+  @damage = row_parts[5].to_i
+  @name = row_parts[6]
+  game(save)
 end
+# Beskrivning: Funktionen beräknar sannolikheten att ett 'monster' ska skapas och returnerar dess egenskaper.
+# Argument
+# Return: array/nil: array med sträng för beskrivning av 'monstret' och integers för dess egenskaper/nil ifall monster ej skapas
+# Exempel:         
+# 
+# Datum: 2025-05-09
+# Namn: Alexander, Sebatian
 
 def spawn_monster()
   slu = rand(1..7)
@@ -403,7 +438,7 @@ def spawn_monster()
       return ["jätte", 15, 2..3]
     else
       return ["björn", 8, 1..3]
-    end  #name, hp, attack
+    end
   elsif slu == 3
     amount_hp = rand(2..3)
     puts "Du hittade en helnings dyck!"
@@ -471,7 +506,7 @@ def attack(monster_inf, hp) #20 == hp
     puts "Du är nära döden – endast #{@hp} HP kvar! Hitta en läkande dryck omedelbart!"
   end 
   puts "----Slaget är över----"
-  puts "\n#{@dungeon_map[@x][@y][2]}"
+   puts "#{@dungeon_map[@y][@x][2]}"
 end # Du ska kunna attackera den attackerar och du kan skada den och jag kan bli skadad
 
 def help_list
@@ -502,16 +537,16 @@ def character_create
       input = gets.chomp
     end 
   if input == "1"
-    @hp = "20"
-    @damage =  "2..6"
+    @hp = 20
+    @damage =  2..6
     puts "Du skapade Warrior-karaktären #{@name} med #{@hp} HP och 2-6 i skada."
   elsif input == "2"
-    @hp = "15"
-    @damage =  "3..8"
+    @hp = 15
+    @damage =  3..8
     puts "Du skapade Assasin-karaktären #{@name} med #{@hp} HP och 3-8 i skada."
   else
-    @hp = "25"
-    @damage = "1..4"
+    @hp = 25
+    @damage = 1..4
     puts "Du skapade Tank-karaktären #{@name} med #{@hp} HP och 1-4 i skada."
   end 
   return
@@ -521,9 +556,7 @@ def update()
   while @alive
     input = gets.chomp
     if input == @operations[0]
-      ta_upp()
     elsif input == @operations[1]
-      read()
     elsif input == @operations[2]
       move_player(input)
     elsif input == @operations[3]
@@ -532,7 +565,7 @@ def update()
       move_player(input)
     elsif input == @operations[5]
     elsif input == @operations[6]
-      move_player("vänster")
+      move_player(input)
     elsif input == @operations[7]
       save_game()
     elsif input == @operations[8]
@@ -545,8 +578,6 @@ def update()
     end
   end
 end
-# spara en fil
-# Avslut med en nyckel för att komma ut
 
-#check_room(4,4)
 start()
+#check_room(0,0)
